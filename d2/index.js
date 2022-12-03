@@ -3,20 +3,27 @@ const util = require('../util');
 const text = util.readInputTxt('d2');
 
 const rock = {
+    name: 'rock',
     points: 1,
 }
 
 const paper = {
+    name: 'paper',
     points: 2,
-    counter: rock,
+    wins: rock,
 }
 
 const scissors = {
+    name: 'scissors',
     points: 3,
-    counter: paper,
+    wins: paper,
+    loses: rock,
 }
 
-rock.counter = scissors;
+paper.loses = scissors;
+
+rock.wins = scissors;
+rock.loses = paper;
 
 const firstDict = {
     'A' : rock,
@@ -25,9 +32,10 @@ const firstDict = {
 }
 
 const secondDict = {
-    'X' : rock,
-    'Y' : paper,
-    'Z' : scissors,
+    // Precisa ser o contrário pra dar oq eu preciso escolher
+    'X' : 'wins',
+    'Y' : 'draw',
+    'Z' : 'loses',
 }
 
 const DRAW_POINTS = 3;
@@ -40,19 +48,24 @@ text.forEach(item => {
     const choices = item.split(' ');
 
     const firstPersonChoice = firstDict[choices[0]];
-    const secondPersonChoice = secondDict[choices[1]];
+
+    const secondPersonResult = secondDict[choices[1]];
+    let secondPersonChoice = firstPersonChoice[secondPersonResult] ?? firstPersonChoice;
 
     secondPersonPoints += secondPersonChoice.points;
 
-    if(firstPersonChoice.counter === secondPersonChoice){
+    if(firstPersonChoice.wins === secondPersonChoice){
+        //perdi
         return;
     }
-
-    if(secondPersonChoice.counter === firstPersonChoice){
+    
+    if(secondPersonChoice.wins === firstPersonChoice){
+        //venci
         secondPersonPoints += WIN_POINTS;
         return
     }
-
+    
+    //empatei
     secondPersonPoints += DRAW_POINTS;
 });
 
