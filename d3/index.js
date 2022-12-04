@@ -16,20 +16,43 @@ const getPriority = (s) =>{
 
 let prioritySum = 0;
 
+const ruckSacksByGroup = text.reduce((acc,curr)=>{
+    let lastArray = acc[acc.length-1];
 
-text.forEach(item => {
-    const firstPart = item.slice(0,item.length/2);
-    const secondPart = item.slice(item.length / 2,item.length);
+    if(lastArray.length === 3){
+        acc[acc.length] = [];
+        lastArray = acc[acc.length -1];
+    }
 
-    let repeatedItem;
+    lastArray.push(curr);
 
-    secondPart.split("").forEach((char)=>{
-        if(firstPart.includes(char)){
-            repeatedItem = char;
+    return acc;
+},[[]])
+
+
+ruckSacksByGroup.forEach(item => {
+   const firstLine = item[0];
+   const secondLine = item[1];
+   const thirdLine = item[2];
+
+   
+   let repeatedItems = [];
+   
+   secondLine.split("").forEach(str=>{
+       if(firstLine.includes(str)){
+           repeatedItems.push(str)
+        }
+    });
+    
+    let badge;
+
+    repeatedItems.forEach(str=>{
+        if(thirdLine.includes(str)){
+            badge = str
         }
     })
 
-    prioritySum+= getPriority(repeatedItem);
+    prioritySum += getPriority(badge);
 });
 
 console.log({prioritySum})
