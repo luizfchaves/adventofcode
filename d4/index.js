@@ -33,8 +33,8 @@ text.forEach(item => {
         }
     }
 
-    const secondArrayFullyContainsFirst = firstItems.every(item=>secondItems.includes(item));
-    const firstArrayFullyContainsSecond = secondItems.every(item=>firstItems.includes(item));
+    const secondArrayFullyContainsFirst = firstItems.some(item=>secondItems.includes(item));
+    const firstArrayFullyContainsSecond = secondItems.some(item=>firstItems.includes(item));
 
     if(
         firstArrayFullyContainsSecond
